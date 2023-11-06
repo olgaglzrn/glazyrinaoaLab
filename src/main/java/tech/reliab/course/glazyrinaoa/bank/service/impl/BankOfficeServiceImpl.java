@@ -13,17 +13,17 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         }
 
         if (bankOffice.getTotalMoney() < 0) {
-            System.err.println("Error: BankOffice - total money must be non-negative");
+            System.err.println("Ошибка! Офис банка - общая сумма не может быть отрицальной.");
             return null;
         }
 
         if (bankOffice.getBank() == null) {
-            System.err.println("Error: BankOffice - must have bank");
+            System.err.println("Ошибка! Офис банка - должен иметь банк.");
             return null;
         }
 
         if (bankOffice.getRentPrice() < 0) {
-            System.err.println("Error: BankOffice - rentPrice must be non-negative");
+            System.err.println("Ошибка! Офис банка - Арендная плата не может быть отрицальной.");
             return null;
         }
 

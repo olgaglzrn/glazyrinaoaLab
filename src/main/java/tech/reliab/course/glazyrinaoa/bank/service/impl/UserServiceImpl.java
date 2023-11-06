@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (user.getBank() == null) {
-            System.err.println("Error: User doesn't have bank");
+            System.err.println("Ошибка! У пользователя нет банковского счета.");
             return null;
         }
 

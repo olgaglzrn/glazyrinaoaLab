@@ -1,5 +1,4 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
-
 import java.util.UUID;
 
 public class Account {

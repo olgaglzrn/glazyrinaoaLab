@@ -37,12 +37,12 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public boolean withdrawMoney(PaymentAccount paymentAccount, double amount) {
         if (paymentAccount == null) {
-            System.err.println("Error: PaymentAccount - non existing payment account");
+            System.err.println("Ошибка! Платежный счет - несуществующий платежный счет.");
             return false;
         }
 
         if (amount <= 0) {
-            System.err.println("Error: PaymentAccount - withdrawal amount doesn't be negative");
+            System.err.println("Ошибка! Платежный счет - сумма вывода не может быть отрицательной.");
             return false;
         }
 

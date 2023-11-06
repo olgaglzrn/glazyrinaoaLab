@@ -13,7 +13,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (employee.getSalary() < 0) {
-            System.err.println("Error: Employee - salary doesn't be negative");
+            System.err.println("Ошибка! Работник - зарплата не может быть отрицательной.");
             return null;
         }
 
