@@ -52,6 +52,15 @@ public class Employee {
         this.bankOffice = bankOffice;
     }
 
+    public Employee(String name, Bank bank, BankOffice bankOffice, LocalDate birthDate, Job job) {
+        initDefault();
+        this.name = name;
+        this.bank = bank;
+        this.bankOffice = bankOffice;
+        this.birthDate = birthDate;
+        this.job = job;
+    }
+
     public Employee(String name, LocalDate birthDate, Job job, Bank bank, boolean isWorkingFromHome,
                     BankOffice bankOffice, boolean isCreditAvailable, double salary) {
         initDefault();

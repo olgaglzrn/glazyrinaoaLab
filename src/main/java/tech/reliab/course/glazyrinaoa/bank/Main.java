@@ -43,7 +43,7 @@ public class Main {
         Employee employee = employeeService
                 .create(new Employee("Иванов Иван Иванович",
                         bank,
-                        bankOffice
+                        bankOffice,LocalDate.of(1999,11,7), Employee.Job.Worker
                 ));
         System.out.println(employee);
 
@@ -58,7 +58,7 @@ public class Main {
         UserService userService = new UserServiceImpl();
         User user = userService
                 .create(new User("Солнышко Артем Евгеньевич",
-                        bank
+                        bank, LocalDate.of(2002,2,1)
                 ));
         System.out.println(user);
 
@@ -68,7 +68,7 @@ public class Main {
         System.out.println(paymentAccount);
 
         CreditAccountService creditAccountService = new CreditAccountServiceImpl();
-        CreditAccount creditAccount = creditAccountService.create(new CreditAccount(user, bank, employee, paymentAccount));
+        CreditAccount creditAccount = creditAccountService.create(new CreditAccount(user, bank, LocalDate.of(2023,4,23), LocalDate.of(2033,4,23), employee, paymentAccount));
         System.out.println(creditAccount);
     }
 }

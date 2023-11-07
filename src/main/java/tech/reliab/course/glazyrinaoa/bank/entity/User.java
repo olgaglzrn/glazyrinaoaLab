@@ -45,6 +45,13 @@ public class User {
         this.bank = bank;
     }
 
+    public User(String name, Bank bank, LocalDate birthDate) {
+        initDefault();
+        this.name = name;
+        this.bank = bank;
+        this.birthDate = birthDate;
+    }
+
     public User(String name, LocalDate birthDate, String placeOfWork, double monthlyIncome, Bank bank,
                 double creditRating) {
         initDefault();
@@ -66,6 +73,8 @@ public class User {
         this.bank = bank;
         this.creditRating = creditRating;
     }
+
+
 
     public User(User user) {
         this.id = user.id;
