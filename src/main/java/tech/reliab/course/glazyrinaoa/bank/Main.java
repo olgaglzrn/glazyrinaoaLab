@@ -91,33 +91,31 @@ public class Main {
         }
 
         while (true) {
-            System.out.print("Здравствуйте, я банковский помошник, что вы хотите сделать:\n");
-            System.out.print("Для того, чтобы получить информацию по банку введите: Б \n");
-            System.out.print("Для того, чтобы получить всю информацию о клиенте введите: К \n");
+            System.out.print("Выберите, что хотите сделать:\n");
+            System.out.print("Получить информацию по банку введите: Б \n");
+            System.out.print("Получить всю информацию о клиенте введите: К \n");
 
             Scanner in = new Scanner(System.in);
             String command = in.next();
             switch (command) {
                 case ("Б"):
-                    System.out.println("Всего банков = " + bankService.getAllBanks().size());
                     for (Bank bank : bankService.getAllBanks()) {
                         System.out.println(bank.getId() + " - " + bank.getName());
                     }
-                    System.out.println("Введите номер, интересующего банка:");
+                    System.out.println("Какой банк вас интересует? (введите номер):");
                     int bankId2 = in.nextInt();
                     bankService.printBankData(bankId2);
                     break;
                 case ("К"):
-                    System.out.println("Всего клиентов = " + userService.getAllUsers().size());
                     for (User user : userService.getAllUsers()) {
                         System.out.println(user.getId() + " - " + user.getName());
                     }
-                    System.out.println("Введите номер, интересующего клиента:");
+                    System.out.println("Какой клиент вас интересует? (введите номер):");
                     int userId = in.nextInt();
                     userService.printUserData(userId, true);
                     break;
                 default:
-                    System.out.print("Не корректный ввод\n");
+                    System.out.print("Некорректный ввод!\n");
                     break;
             }
         }
