@@ -1,11 +1,14 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 public class User {
     public static final double MAX_MONTHLY_INCOME = 10000;
+    private static int currentId = 0;
 
-    private UUID id;
+    protected int id;
     private String name;
     private LocalDate birthDate;
     private String placeOfWork;
@@ -13,9 +16,15 @@ public class User {
     private Bank bank;
     private double creditRating;
 
+    private ArrayList<CreditAccount> creditAccounts;
+
+    private ArrayList<PaymentAccount> paymentAccounts;
+
+    private void initializeId() {
+        this.id = currentId++;
+    }
 
     private void initDefault() {
-        id = UUID.randomUUID();
         name = "No name";
         birthDate = null;
         placeOfWork = "No place of work";
@@ -24,36 +33,43 @@ public class User {
         creditRating = 0;
     }
 
+    public ArrayList<CreditAccount> getCreditAccounts() {
+        return creditAccounts;
+    }
+
+    public ArrayList<PaymentAccount> getPaymentAccounts() {
+        return paymentAccounts;
+    }
+
     public User() {
+
+        initializeId();
         initDefault();
     }
 
     public User(String name) {
+        initializeId();
         initDefault();
         this.name = name;
     }
 
     public User(String name, LocalDate birthDate) {
+        initializeId();
         initDefault();
         this.name = name;
         this.birthDate = birthDate;
     }
 
     public User(String name, Bank bank) {
+        initializeId();
         initDefault();
         this.name = name;
         this.bank = bank;
-    }
-
-    public User(String name, Bank bank, LocalDate birthDate) {
-        initDefault();
-        this.name = name;
-        this.bank = bank;
-        this.birthDate = birthDate;
     }
 
     public User(String name, LocalDate birthDate, String placeOfWork, double monthlyIncome, Bank bank,
                 double creditRating) {
+        initializeId();
         initDefault();
         this.name = name;
         this.birthDate = birthDate;
@@ -61,9 +77,11 @@ public class User {
         this.monthlyIncome = monthlyIncome;
         this.bank = bank;
         this.creditRating = creditRating;
+        this.creditAccounts = new ArrayList<CreditAccount>();
+        this.paymentAccounts = new ArrayList<PaymentAccount>();
     }
 
-    public User(UUID id, String name, LocalDate birthDate, String placeOfWork, double monthlyIncome, Bank bank,
+    public User(int id, String name, LocalDate birthDate, String placeOfWork, double monthlyIncome, Bank bank,
                 double creditRating) {
         this.id = id;
         this.name = name;
@@ -72,9 +90,9 @@ public class User {
         this.monthlyIncome = monthlyIncome;
         this.bank = bank;
         this.creditRating = creditRating;
+        this.creditAccounts = new ArrayList<CreditAccount>();
+        this.paymentAccounts = new ArrayList<PaymentAccount>();
     }
-
-
 
     public User(User user) {
         this.id = user.id;
@@ -84,13 +102,15 @@ public class User {
         this.monthlyIncome = user.monthlyIncome;
         this.bank = new Bank(user.bank);
         this.creditRating = user.creditRating;
+        this.creditAccounts = new ArrayList<CreditAccount>();
+        this.paymentAccounts = new ArrayList<PaymentAccount>();
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

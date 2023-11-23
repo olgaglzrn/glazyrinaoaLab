@@ -1,18 +1,25 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
-import java.util.UUID;
+
 
 public class Account {
-    protected UUID id;
+    private static int currentId = 0;
+
+    protected int id;
     protected User user;
     protected Bank bank;
 
+    private void initializeId() {
+        this.id = currentId++;
+    }
+
     private void initDefault() {
-        id = UUID.randomUUID();
+        initializeId();
         user = null;
         bank = null;
     }
 
     public Account() {
+        initializeId();
         initDefault();
     }
 
@@ -20,34 +27,35 @@ public class Account {
         this.user = user;
     }
 
-    public Account(UUID id, User user) {
-        this.id = id;
+    public Account(int id, User user) {
+        this.id = currentId++;
         this.user = user;
     }
 
-    public Account(UUID id, User user, Bank bank) {
-        this.id = id;
+    public Account(int id, User user, Bank bank) {
+        this.id = currentId++;
         this.user = user;
         this.bank = bank;
     }
 
     public Account(User user, Bank bank) {
+        initializeId();
         initDefault();
         this.user = user;
         this.bank = bank;
     }
 
     public Account(Account account) {
-        this.id = UUID.fromString(account.id.toString());
+        this.id = account.id;
         this.user = new User(account.user);
         this.bank = new Bank(account.bank);
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

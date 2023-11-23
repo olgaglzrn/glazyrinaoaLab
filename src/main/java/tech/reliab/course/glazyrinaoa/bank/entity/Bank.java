@@ -1,12 +1,15 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bank {
     public static final double MAX_RATING = 100;
     public static final double MAX_TOTAL_MONEY = 1000000;
     public static final double MAX_INTEREST_RATE = 20;
+    private static int currentId = 0;
 
-    private UUID id;
+    protected int id;
     private String name;
     private int officeCount;
     private int atmCount;
@@ -16,8 +19,15 @@ public class Bank {
     private double totalMoney;
     private double interestRate;
 
+    List<BankOffice> lstOffices = new ArrayList<BankOffice>();
+
+    List<User> lstUsers = new ArrayList<User>();
+
+    private void initializeId() {
+        this.id = currentId++;
+    }
+
     private void initDefaults() {
-        id = UUID.randomUUID();
         name = "No name";
         officeCount = 0;
         atmCount = 0;
@@ -29,15 +39,17 @@ public class Bank {
     }
 
     public Bank() {
+        initializeId();
         initDefaults();
     }
 
     public Bank(String name) {
+        initializeId();
         initDefaults();
         this.name = name;
     }
 
-    public Bank(UUID id, String name) {
+    public Bank(int id, String name) {
         initDefaults();
         this.id = id;
         this.name = name;
@@ -45,6 +57,7 @@ public class Bank {
 
     public Bank(String name, int officeCount, int atmCount, int employeeCount, int clientCount,
                 byte rating, double  totalMoney, double  interestRate) {
+        initializeId();
         initDefaults();
         this.name = name;
         this.officeCount = officeCount;
@@ -56,7 +69,7 @@ public class Bank {
         this.interestRate = interestRate;
     }
 
-    public Bank(UUID id, String name, int officeCount, int atmCount, int employeeCount, int clientCount,
+    public Bank(int id, String name, int officeCount, int atmCount, int employeeCount, int clientCount,
                 byte rating, double  totalMoney, double  interestRate) {
         this.id = id;
         this.name = name;
@@ -70,7 +83,7 @@ public class Bank {
     }
 
     public Bank(Bank bank) {
-        this.id = UUID.fromString(bank.id.toString());
+        this.id = bank.id;
         this.name = bank.name;
         this.officeCount = bank.officeCount;
         this.atmCount = bank.atmCount;
@@ -81,11 +94,11 @@ public class Bank {
         this.interestRate = bank.interestRate;
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -151,6 +164,14 @@ public class Bank {
 
     public void setInterestRate(double  interestRate) {
         this.interestRate = interestRate;
+    }
+
+    public List<User> getLstUsers() {
+        return lstUsers;
+    }
+
+    public List<BankOffice> getLstOffices() {
+        return lstOffices;
     }
 
     @Override

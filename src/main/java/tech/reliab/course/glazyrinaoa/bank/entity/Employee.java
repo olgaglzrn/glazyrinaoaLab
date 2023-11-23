@@ -1,25 +1,28 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
-import java.time.LocalDate;
-import java.util.UUID;
-public class Employee {
-    public enum Job {
-        Manager,
-        Worker
-    }
+import tech.reliab.course.glazyrinaoa.bank.utils.JobStatus;
 
-    private UUID id;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Employee {
+    private static int currentId = 0;
+
+    protected int id;
     private String name;
     private LocalDate birthDate;
-    private Job job;
+    private JobStatus job;
     private Bank bank;
     private boolean isWorkingFromHome;
     private BankOffice bankOffice;
     private boolean isCreditAvailable;
     private double  salary;
 
+    private void initializeId() {
+        this.id = currentId++;
+    }
+
     private void initDefault() {
-        id = UUID.randomUUID();
         name = "No name";
         birthDate = null;
         job = null;
@@ -31,38 +34,35 @@ public class Employee {
     }
 
     public Employee() {
+        initializeId();
         initDefault();
+
     }
 
     public Employee(String name) {
+        initializeId();
         initDefault();
         this.name = name;
     }
 
     public Employee(String name, LocalDate birthDate) {
+        initializeId();
         initDefault();
         this.name = name;
         this.birthDate = birthDate;
     }
 
     public Employee(String name, Bank bank, BankOffice bankOffice) {
+        initializeId();
         initDefault();
         this.name = name;
         this.bank = bank;
         this.bankOffice = bankOffice;
     }
 
-    public Employee(String name, Bank bank, BankOffice bankOffice, LocalDate birthDate, Job job) {
-        initDefault();
-        this.name = name;
-        this.bank = bank;
-        this.bankOffice = bankOffice;
-        this.birthDate = birthDate;
-        this.job = job;
-    }
-
-    public Employee(String name, LocalDate birthDate, Job job, Bank bank, boolean isWorkingFromHome,
+    public Employee(String name, LocalDate birthDate, JobStatus job, Bank bank, boolean isWorkingFromHome,
                     BankOffice bankOffice, boolean isCreditAvailable, double salary) {
+        initializeId();
         initDefault();
         this.name = name;
         this.birthDate = birthDate;
@@ -74,7 +74,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee(UUID id, String name, LocalDate birthDate, Job job, Bank bank, boolean isWorkingFromHome,
+    public Employee(int id, String name, LocalDate birthDate, JobStatus job, Bank bank, boolean isWorkingFromHome,
                     BankOffice bankOffice, boolean isCreditAvailable, double salary) {
         this.id = id;
         this.name = name;
@@ -99,11 +99,11 @@ public class Employee {
         this.salary = employee.salary;
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -123,11 +123,11 @@ public class Employee {
         this.birthDate = birthDate;
     }
 
-    public Job getJob() {
+    public JobStatus getJob() {
         return this.job;
     }
 
-    public void setJob(Job job) {
+    public void setJob(JobStatus job) {
         this.job = job;
     }
 
@@ -185,9 +185,9 @@ public class Employee {
                 "\n ФИО = '" + getName() + "'" +
                 ",\n Дата рождения = '" + getBirthDate() + "'" +
                 ",\n Должность = '" + getJob() + "'" +
-                ",\n Работает ли в банковском офисе или удаленно ? '" + isIsWorkingFromHome() + "'" +
+                ",\n Работает ли в банковском офисе или удаленно ? '" + getIsWorkingFromHome() + "'" +
                 ",\n Банковский офис, в котором работает = '" + this.bankOffice.getName() + "'" +
-                ",\n Может ли выдавать кредиты ? '" + isIsCreditAvailable() + "'" +
+                ",\n Может ли выдавать кредиты ? '" + getIsCreditAvailable() + "'" +
                 ",\n Размер зарплаты = '" + String.format("%.2f", getSalary()) + "'" + "\n";
     }
 }

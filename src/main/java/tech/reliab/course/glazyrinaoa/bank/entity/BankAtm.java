@@ -1,17 +1,15 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
+import tech.reliab.course.glazyrinaoa.bank.utils.AtmStatus;
+
 import java.util.UUID;
 public class BankAtm {
-    public enum Status {
-        NOT_WORK,
-        WORK,
-        NO_MONEY
-    }
+    private static int currentId = 0;
 
-    private UUID id;
+    protected int id;
     private String name;
     private String address;
-    private Status status;
+    private AtmStatus status;
     private Bank bank;
     private BankOffice bankOffice;
     private Employee employee;
@@ -20,11 +18,14 @@ public class BankAtm {
     private double  totalMoney;
     private double  maintenanceCost;
 
+    private void initializeId() {
+        this.id = currentId++;
+    }
+
     private void initDefault() {
-        id = UUID.randomUUID();
         name = "No name";
         address = "No address";
-        status = Status.NOT_WORK;
+        status = AtmStatus.NOT_WORK;
         bank = null;
         bankOffice = null;
         employee = null;
@@ -35,15 +36,18 @@ public class BankAtm {
     }
 
     public BankAtm() {
+        initializeId();
         initDefault();
     }
 
     public BankAtm(String name) {
+        initializeId();
         initDefault();
         this.name = name;
     }
 
     public BankAtm(String name, String address) {
+        initializeId();
         initDefault();
         this.name = name;
         this.address = address;
@@ -51,6 +55,7 @@ public class BankAtm {
 
     public BankAtm(String name, Bank bank, BankOffice bankOffice,
                    Employee employee) {
+        initializeId();
         initDefault();
         this.name = name;
         this.bank = bank;
@@ -58,9 +63,10 @@ public class BankAtm {
         this.employee = employee;
     }
 
-    public BankAtm(String name, String address, Status status, Bank bank, BankOffice bankOffice,
+    public BankAtm(String name, String address, AtmStatus status, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, double  totalMoney,
                    double  maintenanceCost) {
+        initializeId();
         initDefault();
         this.name = name;
         this.address = address;
@@ -74,7 +80,7 @@ public class BankAtm {
         this.maintenanceCost = maintenanceCost;
     }
 
-    public BankAtm(UUID id, String name, String address, Status status, Bank bank, BankOffice bankOffice,
+    public BankAtm(int id, String name, String address, AtmStatus status, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, double  totalMoney,
                    double  maintenanceCost) {
         this.id = id;
@@ -91,7 +97,7 @@ public class BankAtm {
     }
 
     public BankAtm(BankAtm bankAtm) {
-        this.id = UUID.fromString(bankAtm.id.toString());
+        this.id = bankAtm.id;
         this.name = bankAtm.name;
         this.address = bankAtm.address;
         this.status = bankAtm.status;
@@ -104,11 +110,11 @@ public class BankAtm {
         this.maintenanceCost = bankAtm.maintenanceCost;
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -128,11 +134,11 @@ public class BankAtm {
         this.address = address;
     }
 
-    public Status getStatus() {
+    public AtmStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(AtmStatus status) {
         this.status = status;
     }
 
@@ -209,8 +215,8 @@ public class BankAtm {
                 ",\n Банк, которому принадлжеит банокмат = '" + this.bank.getName() + "'" +
                 ",\n Расположение банкомата = '" + this.bankOffice.getAddress() + "'" +
                 ",\n Обслуживающий сотрудник = '" + this.employee.getName() + "'" +
-                ",\n Выдаёт деньги = '" + isIsCashWithdrawalAvailable() + "'" +
-                ",\n Принимает деньги = '" + isIsCashDepositAvailable() + "'" +
+                ",\n Выдаёт деньги = '" + getIsCashWithdrawalAvailable() + "'" +
+                ",\n Принимает деньги = '" + getIsCashDepositAvailable() + "'" +
                 ",\n Кол-во денег в банкомате = '" + String.format("%.2f", getTotalMoney()) + "'" +
                 ",\n Стоимость обслуживания банкомата = '" + String.format("%.2f", getMaintenanceCost())  + "'" + "\n";
     }

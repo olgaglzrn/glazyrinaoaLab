@@ -2,16 +2,17 @@ package tech.reliab.course.glazyrinaoa.bank.entity;
 
 import java.time.LocalDate;
 import java.util.UUID;
-public class CreditAccount extends Account{
+public class CreditAccount extends Account {
     private LocalDate dateStart;
     private LocalDate dateEnd;
     private int monthCount;
-    private double  creditAmount;
-    private double  remainingCreditAmount;
-    private double  montlyPayment;
-    private double  interestRate;
+    private double creditAmount;
+    private double remainingCreditAmount;
+    private double montlyPayment;
+    private double interestRate;
     private Employee employee;
     private PaymentAccount paymentAccount;
+
 
     private void initDefault() {
         dateStart = null;
@@ -34,7 +35,8 @@ public class CreditAccount extends Account{
         super(user);
         initDefault();
     }
-    public CreditAccount(UUID id, User user) {
+
+    public CreditAccount(int id, User user) {
         super(id, user);
         initDefault();
     }
@@ -44,7 +46,7 @@ public class CreditAccount extends Account{
         initDefault();
     }
 
-    public CreditAccount(UUID id, User user, Bank bank) {
+    public CreditAccount(int id, User user, Bank bank) {
         super(id, user, bank);
         initDefault();
     }
@@ -56,19 +58,9 @@ public class CreditAccount extends Account{
         this.paymentAccount = paymentAccount;
     }
 
-    public CreditAccount(User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, Employee employee, PaymentAccount paymentAccount) {
-        super(user, bank);
-        initDefault();
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.employee = employee;
-        this.paymentAccount = paymentAccount;
-    }
-
-
     public CreditAccount(User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, int monthCount,
-                         double  creditAmount, double  remainingCreditAmount, double  montlyPayment,
-                         double  interestRate, Employee employee, PaymentAccount paymentAccount) {
+                         double creditAmount, double remainingCreditAmount, double montlyPayment,
+                         double interestRate, Employee employee, PaymentAccount paymentAccount) {
         super(user, bank);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -81,9 +73,9 @@ public class CreditAccount extends Account{
         this.paymentAccount = paymentAccount;
     }
 
-    public CreditAccount(UUID id, User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, int monthCount,
-                         double  creditAmount, double  remainingCreditAmount, double  montlyPayment,
-                         double  interestRate, Employee employee, PaymentAccount paymentAccount) {
+    public CreditAccount(int id, User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, int monthCount,
+                         double creditAmount, double remainingCreditAmount, double montlyPayment,
+                         double interestRate, Employee employee, PaymentAccount paymentAccount) {
         super(id, user, bank);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -107,6 +99,21 @@ public class CreditAccount extends Account{
         this.interestRate = creditAccount.interestRate;
         this.employee = new Employee(creditAccount.employee);
         this.paymentAccount = new PaymentAccount(creditAccount.paymentAccount);
+    }
+
+    public CreditAccount(User user, Bank bank, LocalDate dateStart, int monthCount,
+                         double creditAmount, double montlyPayment, double interestRate,
+                         Employee employee, PaymentAccount paymentAccount) {
+        super(user, bank);
+        this.dateStart = dateStart;
+        this.dateEnd = dateStart.plusMonths(monthCount);
+        this.monthCount = monthCount;
+        this.creditAmount = creditAmount;
+        this.remainingCreditAmount = creditAmount;
+        this.montlyPayment = montlyPayment;
+        this.interestRate = interestRate;
+        this.employee = employee;
+        this.paymentAccount = paymentAccount;
     }
 
     public LocalDate getDateStart() {

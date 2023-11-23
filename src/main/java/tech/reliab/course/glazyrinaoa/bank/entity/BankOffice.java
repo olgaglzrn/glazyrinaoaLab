@@ -1,8 +1,12 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BankOffice {
-    private UUID id;
+    private static int currentId = 0;
+
+    protected int id;
     private String name;
     private String address;
     private Bank bank;
@@ -15,8 +19,15 @@ public class BankOffice {
     private double totalMoney;
     private double rentPrice;
 
+    List<Employee> lstEmployees = new ArrayList<Employee>();
+
+    List<BankAtm> lstBankAtm = new ArrayList<BankAtm>();
+
+    private void initializeId() {
+        this.id = currentId++;
+    }
+
     private void initWithDefaults() {
-        id = UUID.randomUUID();
         name = "No name";
         address = "No address";
         bank = null;
@@ -30,22 +41,34 @@ public class BankOffice {
         rentPrice = 0;
     }
 
+    public List<BankAtm> getLstBankAtm() {
+        return lstBankAtm;
+    }
+
+    public List<Employee> getLstEmployees() {
+        return lstEmployees;
+    }
+
     public BankOffice() {
+        initializeId();
         initWithDefaults();
     }
 
     public BankOffice(String name) {
+        initializeId();
         initWithDefaults();
         this.name = name;
     }
 
     public BankOffice(String name, String address) {
+        initializeId();
         initWithDefaults();
         this.name = name;
         this.address = address;
     }
 
     public BankOffice(String name, String address, Bank bank) {
+        initializeId();
         initWithDefaults();
         this.name = name;
         this.address = address;
@@ -55,6 +78,7 @@ public class BankOffice {
     public BankOffice(String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
                       int atmCount, boolean isCreditAvailable, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable,
                       double  totalMoney, double  rentPrice) {
+        initializeId();
         initWithDefaults();
         this.name = name;
         this.address = address;
@@ -69,7 +93,7 @@ public class BankOffice {
         this.rentPrice = rentPrice;
     }
 
-    public BankOffice(UUID id, String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
+    public BankOffice(int id, String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
                       int atmCount, boolean isCreditAvailable, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable,
                       double  totalMoney, double  rentPrice) {
         this.id = id;
@@ -87,7 +111,7 @@ public class BankOffice {
     }
 
     public BankOffice(BankOffice bankOffice) {
-        this.id = UUID.fromString(bankOffice.id.toString());
+        this.id = bankOffice.id;
         this.name = bankOffice.name;
         this.address = bankOffice.address;
         this.bank = new Bank(bankOffice.bank);
@@ -101,11 +125,11 @@ public class BankOffice {
         this.rentPrice = bankOffice.rentPrice;
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -223,12 +247,12 @@ public class BankOffice {
                 "\n Название офиса = '" + getName() + "'" +
                 ",\n Адрес = '" + getAddress() + "'" +
                 ",\n Банк = '" + this.bank.getName() + "'" +
-                ",\n Статус работы = '" + isIsWorking() + "'" +
-                ",\n Можно ли разместить банкомат = '" + isIsAtmPlaceable() + "'" +
+                ",\n Статус работы = '" + getIsWorking() + "'" +
+                ",\n Можно ли разместить банкомат = '" + getIsAtmPlaceable() + "'" +
                 ",\n Кол-во банкоматов в данном офисе = '" + getAtmCount() + "'" +
-                ",\n Можно ли оформить кредит в данном офисе ? '" + isIsCreditAvailable() + "'" +
-                ",\n Работает ли на выдачу денег ? '" + isIsCashWithdrawalAvailable() + "'" +
-                ",\n Можно ли внести деньги ? '" + isIsCashDepositAvailable() + "'" +
+                ",\n Можно ли оформить кредит в данном офисе ? '" + getIsCreditAvailable() + "'" +
+                ",\n Работает ли на выдачу денег ? '" + getIsCashWithdrawalAvailable() + "'" +
+                ",\n Можно ли внести деньги ? '" + getIsCashDepositAvailable() + "'" +
                 ",\n Кол-во денег в банковском офисе = '" + getTotalMoney() + "'" +
                 ",\n Стоимость аренды банковского офиса = '" +  String.format("%.2f", getRentPrice()) + "'" + "\n";
     }
