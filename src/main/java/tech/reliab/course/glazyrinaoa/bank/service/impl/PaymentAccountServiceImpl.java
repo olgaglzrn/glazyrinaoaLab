@@ -23,7 +23,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     public PaymentAccount getPaymentAccountById(int id) {
         PaymentAccount account = paymentAccountsTable.get(id);
         if (account == null) {
-            System.err.println("Payment account with id " + id + " is not found");
+            System.err.println("Такого платёжного счёта нет.");
         }
         return account;
     }
@@ -45,7 +45,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         }
 
         if (paymentAccount.getBalance() < 0) {
-            System.err.println("Error: PaymentAccount - payment account balance doesn't be negative");
+            System.err.println("Ошибка! Платежный счет - сумма вывода не может быть отрицательной.");
             return null;
         }
 
@@ -59,12 +59,12 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public boolean depositMoney(PaymentAccount paymentAccount, double amount) {
         if (paymentAccount == null) {
-            System.err.println("Error: PaymentAccount - non existing payment account");
+            System.err.println("Ошибка! Платежный счет - несуществующий платежный счет.");
             return false;
         }
 
         if (amount <= 0) {
-            System.err.println("Error: PaymentAccount - deposit amount doesn't be negative");
+            System.err.println("Ошибка! Платежный счет - сумма вывода не может быть отрицательной.");
             return false;
         }
 

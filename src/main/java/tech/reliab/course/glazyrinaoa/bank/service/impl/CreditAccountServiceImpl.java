@@ -23,7 +23,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     public CreditAccount getCreditAccountById(int id) {
         CreditAccount account = creditAccountsTable.get(id);
         if (account == null) {
-            System.err.println("Credit account id =" + id + " is not found");
+            System.err.println("Такой кредитный аккаунт отсутствует");
         }
         return account;
     }

@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEmployeeById(int id) {
         Employee employee = employeeTable.get(id);
         if (employee == null) {
-            System.err.println("Employee with id " + id + " is not found");
+            System.err.println("Работник не найден");
         }
         return employee;
     }

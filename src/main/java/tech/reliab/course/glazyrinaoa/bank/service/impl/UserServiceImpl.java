@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(int id) {
         User user = userTable.get(id);
         if (user == null) {
-            System.err.println("Client with id " + id + " is not found");
+            System.err.println("Такого клиента нет.");
         }
         return user;
     }
@@ -109,12 +109,12 @@ public class UserServiceImpl implements UserService {
         if (withAccounts) {
             List<PaymentAccount> paymentAccounts = getAllPaymentAccountsByClientId(id);
             if (paymentAccounts != null) {
-                System.out.println("Payment accounts:");
+                System.out.println("Платёжные счета:");
                 paymentAccounts.forEach(System.out::println);
             }
             List<CreditAccount> creditAccounts = getAllCreditAccountsByClientId(id);
             if (creditAccounts != null) {
-                System.out.println("Credit accounts:");
+                System.out.println("Кредитные счета:");
                 creditAccounts.forEach(System.out::println);
             }
         }

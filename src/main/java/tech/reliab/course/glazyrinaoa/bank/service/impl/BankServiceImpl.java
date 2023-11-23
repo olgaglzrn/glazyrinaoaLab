@@ -68,7 +68,7 @@ public class BankServiceImpl implements BankService {
     public Bank getBankById(int bankId) {
         Bank bank = bankTable.get(bankId);
         if (bank == null) {
-            System.err.println("Bank with id " + bankId + " is not found");
+            System.err.println("Банка с id = " + bankId + " нет");
         }
         return bank;
     }

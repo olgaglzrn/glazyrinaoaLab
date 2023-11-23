@@ -94,7 +94,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         BankOffice bankOffice = getBankOfficeById(id);
         if (bankOffice != null && bankAtm != null) {
             if (!bankOffice.getIsAtmPlaceable()) {
-                System.err.println("Error: BankOffice - cannot install atm");
+                System.err.println("Ошибка! Невозможно установить банкомат!");
                 return false;
             }
 
