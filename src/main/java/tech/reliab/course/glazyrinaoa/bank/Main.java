@@ -92,13 +92,13 @@ public class Main {
 
         while (true) {
             System.out.print("Выберите, что хотите сделать:\n");
-            System.out.print("Получить информацию по банку введите: Б \n");
-            System.out.print("Получить всю информацию о клиенте введите: К \n");
+            System.out.print("Получить информацию по банку введите: Банк \n");
+            System.out.print("Получить всю информацию о клиенте введите: Клиент \n");
 
             Scanner in = new Scanner(System.in);
             String command = in.next();
             switch (command) {
-                case ("Б"):
+                case ("Банк"):
                     for (Bank bank : bankService.getAllBanks()) {
                         System.out.println(bank.getId() + " - " + bank.getName());
                     }
@@ -106,7 +106,7 @@ public class Main {
                     int bankId2 = in.nextInt();
                     bankService.printBankData(bankId2);
                     break;
-                case ("К"):
+                case ("Клиент"):
                     for (User user : userService.getAllUsers()) {
                         System.out.println(user.getId() + " - " + user.getName());
                     }
