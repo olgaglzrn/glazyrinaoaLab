@@ -9,6 +9,10 @@ public interface AtmService {
 
     BankAtm getBankAtmById(int id);
 
+    boolean isAtmSuitable(BankAtm bankAtm, double money);
+
+    boolean addMoney(BankAtm bankAtm, double amount);
+
     BankAtm create(BankAtm bankAtm);
 
 }

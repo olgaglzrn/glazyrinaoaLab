@@ -24,4 +24,6 @@ public interface UserService {
     User getUserById(int id);
 
     void printUserData(int id, boolean withAccounts);
+
+    PaymentAccount getBestPaymentAccount(int id);
 }

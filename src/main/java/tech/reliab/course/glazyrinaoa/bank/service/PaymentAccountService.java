@@ -16,4 +16,6 @@ public interface PaymentAccountService {
     boolean depositMoney(PaymentAccount paymentAccount, double amount);
 
     boolean withdrawMoney(PaymentAccount paymentAccount, double amount);
+
+    double getBalance(int id);
 }

@@ -1,8 +1,12 @@
 package tech.reliab.course.glazyrinaoa.bank.service.impl;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import tech.reliab.course.glazyrinaoa.bank.entity.*;
+import tech.reliab.course.glazyrinaoa.bank.exception.CreditException;
+import tech.reliab.course.glazyrinaoa.bank.exception.IncomException;
+import tech.reliab.course.glazyrinaoa.bank.exception.RatingException;
 import tech.reliab.course.glazyrinaoa.bank.service.BankService;
 
 import tech.reliab.course.glazyrinaoa.bank.service.BankOfficeService;
@@ -119,6 +123,7 @@ public class BankServiceImpl implements BankService {
             bankOffice.setBank(bank);
             bank.setOfficeCount(bank.getOfficeCount() + 1);
             bank.setAtmCount(bank.getAtmCount() + bankOffice.getAtmCount());
+            bank.setTotalMoney(bank.getTotalMoney() + bankOffice.getTotalMoney());
             List<BankOffice> bankOffices = getAllOfficesByBankId(bankId);
             bankOffices.add(bankOffice);
             return true;
@@ -146,6 +151,71 @@ public class BankServiceImpl implements BankService {
             bank.setEmployeeCount(bank.getEmployeeCount() + 1);
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public List<BankOffice> getBankOfficeSuitableInBank(Bank bank, double money) {
+        List<BankOffice> bankOfficesByBank = getAllOfficesByBankId(bank.getId());
+        List<BankOffice> suitableBankOffice = new ArrayList<>();
+        for (BankOffice bankOffice : bankOfficesByBank) {
+            if (bankOfficeService.isSuitableBankOffice(bankOffice, money)) {
+                suitableBankOffice.add(bankOffice);
+            }
+        }
+        return suitableBankOffice;
+    }
+
+    @Override
+    public boolean isBankSuitable(Bank bank, double money) {
+        List<BankOffice> bankOfficeSuitable = getBankOfficeSuitableInBank(bank, money);
+        return !bankOfficeSuitable.isEmpty();
+    }
+
+    @Override
+    public List<Bank> getBanksSuitable(double sum, int countMonth) throws CreditException {
+        List<Bank> banksSuitable = new ArrayList<>();
+        for (Bank bank : bankTable.values()) {
+            if (isBankSuitable(bank, sum)) {
+                banksSuitable.add(bank);
+            }
+        }
+        if (banksSuitable.isEmpty()) {
+            throw new CreditException("подходящие банки отсутствуют.");
+        }
+        return banksSuitable;
+    }
+
+    @Override
+    public boolean approveCredit(Bank bank, CreditAccount account, Employee employee) throws CreditException, RatingException, IncomException {
+        if (account != null && bank != null && employee != null) {
+            double sum = account.getCreditAmount();
+
+            if (bank.getTotalMoney() >= sum && employee.getIsCreditAvailable()) {
+                double bankInterestRateMultiplier = 1 + (bank.getInterestRate() / 100);
+                double sumMonthPay = sum * bankInterestRateMultiplier / account.getMonthCount();
+
+                if (account.getClient().getMonthlyIncome() >= sumMonthPay) {
+                    if (account.getClient().getCreditRating() < 5000 && bank.getRating() > 50) {
+                        throw new RatingException("неподходящие рейтинг.");
+                    }
+
+                    account.setEmployee(employee);
+                    account.setMontlyPayment(sumMonthPay);
+                    account.setBank(bank);
+                    account.setInterestRate(bank.getInterestRate());
+
+                    LocalDate dateEnd = account.getDateStart();
+                    dateEnd = dateEnd.plusMonths(account.getMonthCount());
+                    account.setDateEnd(dateEnd);
+
+                    return true;
+                } else {
+                    throw new IncomException("неподходящий доход.");
+                }
+            }
+        }
+
         return false;
     }
 }

@@ -34,6 +34,17 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
+    public boolean isAtmSuitable(BankAtm bankAtm, double money) {
+        return bankAtm.getTotalMoney() >= money;
+    }
+
+    @Override
+    public boolean addMoney(BankAtm bankAtm, double amount) {
+        bankAtm.setTotalMoney(bankAtm.getTotalMoney() + amount);
+        return true;
+    }
+
+    @Override
     public BankAtm create(BankAtm bankAtm) {
         if (bankAtm == null) {
             return null;

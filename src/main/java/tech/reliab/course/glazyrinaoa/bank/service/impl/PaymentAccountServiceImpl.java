@@ -89,4 +89,9 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return true;
     }
 
+    @Override
+    public double getBalance(int id){
+        PaymentAccount paymentAccount = getPaymentAccountById(id);
+        return paymentAccount.getBalance();
+    }
 }

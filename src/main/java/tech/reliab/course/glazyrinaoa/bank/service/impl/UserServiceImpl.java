@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public double calculateCreditRating(User user) {
-        user.setCreditRating(
-                user.getMonthlyIncome() / 1000000 );
+        user.setCreditRating((int)Math.ceil(user.getMonthlyIncome() / 1000) * 100 );
         return user.getCreditRating();
     }
 
@@ -119,5 +118,12 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+    }
+
+    @Override
+    public PaymentAccount getBestPaymentAccount(int id) {
+        List<PaymentAccount> paymentAccounts = getAllPaymentAccountsByClientId(id);
+        PaymentAccount paymentAccount =  paymentAccounts.stream().min(Comparator.comparing(PaymentAccount::getBalance)).orElseThrow(NoSuchElementException::new);
+        return paymentAccount;
     }
 }

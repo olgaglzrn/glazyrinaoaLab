@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import tech.reliab.course.glazyrinaoa.bank.entity.BankOffice;
+import tech.reliab.course.glazyrinaoa.bank.service.AtmService;
 import tech.reliab.course.glazyrinaoa.bank.service.BankOfficeService;
 import tech.reliab.course.glazyrinaoa.bank.entity.BankAtm;
 import tech.reliab.course.glazyrinaoa.bank.entity.Employee;
 import tech.reliab.course.glazyrinaoa.bank.service.BankService;
+import tech.reliab.course.glazyrinaoa.bank.service.EmployeeService;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
     Map<Integer, BankOffice> bankOfficesTable  = new HashMap<Integer, BankOffice>();
@@ -17,9 +19,21 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     Map<Integer, List<BankAtm>> atmByOfficeIdTable   = new HashMap<Integer, List<BankAtm>>();
 
     private final BankService bankService;
+    private EmployeeService employeeService;
+    private AtmService atmService;
 
     public BankOfficeServiceImpl(BankService bankService) {
         this.bankService = bankService;
+    }
+
+    @Override
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @Override
+    public void setAtmService(AtmService atmService) {
+        this.atmService = atmService;
     }
 
     @Override
@@ -105,7 +119,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             bankAtm.setBank(bankOffice.getBank());
             List<BankAtm> officeAtms = atmByOfficeIdTable.get(bankOffice.getId());
             officeAtms.add(bankAtm);
-
+            addMoney(bankOffice, bankAtm.getTotalMoney());
+            atmByOfficeIdTable.get(bankOffice.getId()).add(bankAtm);
             return true;
         }
         return false;
@@ -121,6 +136,61 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             officeEmployees.add(employee);
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean addMoney(BankOffice bankOffice, double amount) {
+        bankOffice.setTotalMoney(bankOffice.getTotalMoney() + amount);
+        bankOffice.getBank().setTotalMoney(bankOffice.getBank().getTotalMoney() + amount);
+
+        return true;
+    }
+
+    @Override
+    public List<BankAtm> getSuitableBankAtmInOffice(BankOffice bankOffice, double money) {
+        List<BankAtm> bankAtmByOffice = atmByOfficeIdTable.get(bankOffice.getId());
+        List<BankAtm> suitableBankAtm = new ArrayList<>();
+
+        for (BankAtm bankAtm : bankAtmByOffice) {
+            if (atmService.isAtmSuitable(bankAtm, money)) {
+                suitableBankAtm.add(bankAtm);
+            }
+        }
+
+        return suitableBankAtm;
+    }
+
+    @Override
+    public List<Employee> getSuitableEmployeeInOffice(BankOffice bankOffice) {
+        List<Employee> employees = getAllEmployeesByOfficeId(bankOffice.getId());
+        List<Employee> suitableEmployee = new ArrayList<>();
+
+        for (Employee employee : employees) {
+            if (employeeService.isEmployeeSuitable(employee)) {
+                suitableEmployee.add(employee);
+            }
+        }
+
+        return suitableEmployee;
+    }
+
+    @Override
+    public boolean isSuitableBankOffice(BankOffice bankOffice, double money) {
+        if (bankOffice.getIsWorking() && bankOffice.getIsCashWithdrawalAvailable()
+                && bankOffice.getTotalMoney() >= money) {
+            List<BankAtm> bankAtmSuitable = getSuitableBankAtmInOffice(bankOffice, money);
+            if (bankAtmSuitable.isEmpty()) {
+                return false;
+            }
+
+            List<Employee> employeesSuitable = getSuitableEmployeeInOffice(bankOffice);
+            if (employeesSuitable.isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+
         return false;
     }
 }

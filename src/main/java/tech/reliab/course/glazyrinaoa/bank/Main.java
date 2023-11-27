@@ -35,7 +35,9 @@ public class Main {
         BankOfficeService bankOfficeService = new BankOfficeServiceImpl(bankService);
         bankService.setBankOfficeService(bankOfficeService);
         EmployeeService employeeService = new EmployeeServiceImpl(bankOfficeService);
+        bankOfficeService.setEmployeeService(employeeService);
         AtmService atmService = new AtmServiceImpl(bankOfficeService);
+        bankOfficeService.setAtmService(atmService);
         bankService.setBankOfficeService(bankOfficeService);
         UserService userService = new UserServiceImpl(bankService);
         bankService.setClientService(userService);
@@ -63,7 +65,7 @@ public class Main {
 
         for (BankOffice office : offices) {
             for (int i = 1; i <= 3; i++) {
-                atmService.create(new BankAtm("Банкомат № " + i, office.getAddress(), AtmStatus.WORK, office.getBank(), office, bankOfficeService.getAllEmployeesByOfficeId(office.getId()).get(random.nextInt(bankOfficeService.getAllEmployeesByOfficeId(office.getId()).size())), true, true, 10000, random.nextDouble() * 25));
+                atmService.create(new BankAtm("Банкомат № " + i, office.getAddress(), AtmStatus.WORK, office.getBank(), office, bankOfficeService.getAllEmployeesByOfficeId(office.getId()).get(random.nextInt(bankOfficeService.getAllEmployeesByOfficeId(office.getId()).size())), true, true, 15000, random.nextDouble() * 25));
             }
         }
 
@@ -94,6 +96,7 @@ public class Main {
             System.out.print("Выберите, что хотите сделать:\n");
             System.out.print("Получить информацию по банку введите: Банк \n");
             System.out.print("Получить всю информацию о клиенте введите: Клиент \n");
+            System.out.print("Для получения кредита введите: Кредит \n");
 
             Scanner in = new Scanner(System.in);
             String command = in.next();
@@ -113,6 +116,41 @@ public class Main {
                     System.out.println("Какой клиент вас интересует? (введите номер):");
                     int userId = in.nextInt();
                     userService.printUserData(userId, true);
+                    break;
+                case ("Кредит"):
+                    for (User user : userService.getAllUsers()) {
+                        System.out.println(user.getId() + " - " + user.getName());
+                    }
+                    System.out.println("Введите номер заёмщика:");
+                    int clientId = in.nextInt();
+                    in.nextLine();
+                    System.out.println("Введите сумму кредита:");
+                    double amount = Double.parseDouble(in.nextLine());
+                    System.out.println("Введите срок кредита(в месяцах)");
+                    int months = in.nextInt();
+                    in.nextLine();
+
+                    List<Bank> suitableBanks = bankService.getBanksSuitable(amount, months);
+                    System.out.println("Список подходящих банков:");
+                    for (Bank bank : suitableBanks) {
+                        System.out.println(bank.getId() + " - " + bank.getName());
+                    }
+                    int bankId = in.nextInt();
+                    in.nextLine();
+                    Bank bank = bankService.getBankById(bankId);
+                    BankOffice bankOffice = bankService.getBankOfficeSuitableInBank(bank, amount)
+                            .get(0);
+                    Employee employee = bankOfficeService.getSuitableEmployeeInOffice(bankOffice)
+                            .get(0);
+                    PaymentAccount paymentAccount;
+                    paymentAccount = userService.getBestPaymentAccount(clientId);
+                    CreditAccount creditAccount = creditAccountService.create(new CreditAccount(
+                            userService.getUserById(clientId), bank, LocalDate.now(), months, amount, 0, 0, employee, paymentAccount));
+                    if (bankService.approveCredit(bank, creditAccount, employee)) {
+                        System.out.println("Кредит одобрен " + creditAccount.getId());
+                    } else {
+                        System.out.println("Кредит не одобрен");
+                    }
                     break;
                 default:
                     System.out.print("Некорректный ввод!\n");
