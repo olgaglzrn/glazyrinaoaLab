@@ -218,4 +218,21 @@ public class BankServiceImpl implements BankService {
 
         return false;
     }
+
+    @Override
+    public boolean transferClient(User user, int newBankId) {
+        Bank curBank = getBankById(user.getBank().getId());
+        Bank newBank = getBankById(newBankId);
+        if (newBank != null && curBank != null && user != null) {
+            List<User> users = userByBankIdTable.get(user.getBank().getId());
+            users.remove(user);
+            curBank.removeUser(user);
+
+            user.setBank(newBank);
+            users.add(user);
+            newBank.addUser(user);
+            return true;
+        }
+        return false;
+    }
 }

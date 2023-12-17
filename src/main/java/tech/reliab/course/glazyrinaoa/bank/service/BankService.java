@@ -39,4 +39,6 @@ public interface BankService {
     List<Bank> getBanksSuitable(double sum, int countMonth) throws CreditException;
 
     boolean approveCredit(Bank bank, CreditAccount account, Employee employee) throws CreditException, RatingException, IncomException;
+
+    boolean transferClient(User user, int newBankId);
 }

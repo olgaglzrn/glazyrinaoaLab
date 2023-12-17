@@ -42,7 +42,7 @@ public class Main {
         UserService userService = new UserServiceImpl(bankService);
         bankService.setClientService(userService);
         PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl(userService);
-        CreditAccountService creditAccountService = new CreditAccountServiceImpl(userService);
+        CreditAccountService creditAccountService = new CreditAccountServiceImpl(userService, bankService);
 
 
         for (int i = 0; i < 5; i++) {
@@ -97,6 +97,8 @@ public class Main {
             System.out.print("Получить информацию по банку введите: Банк \n");
             System.out.print("Получить всю информацию о клиенте введите: Клиент \n");
             System.out.print("Для получения кредита введите: Кредит \n");
+            System.out.println("Для получения файл со счетами клента введите: Вывод");
+            System.out.println("Для внесения информацию о счетах из файла введите: Ввод");
 
             Scanner in = new Scanner(System.in);
             String command = in.next();
@@ -150,6 +152,51 @@ public class Main {
                         System.out.println("Кредит одобрен " + creditAccount.getId());
                     } else {
                         System.out.println("Кредит не одобрен");
+                    }
+                    break;
+                case ("Вывод"):
+                    System.out.println("Список клиентов:");
+                    for (User user : userService.getAllUsers()) {
+                        System.out.println(user.getId() + ". " + user.getName());
+                    }
+                    System.out.println("Какой клиент вас интересует? (введите номер):");
+                    int userId2 = in.nextInt();
+                    in.nextLine();
+
+                    System.out.println("Список банков:");
+                    for (Bank bank2 : bankService.getAllBanks()) {
+                        System.out.println(bank2.getId() + ". " + bank2.getName());
+                    }
+                    System.out.println("Какой банк вас интересует? (введите номер):");
+                    int bankId3 = in.nextInt();
+                    in.nextLine();
+
+                    boolean isOk = creditAccountService.exportClientAccountsToTxt(userId2, bankId3);
+
+                    if (isOk) {
+                        System.out.println(
+                                "Успешно!");
+                    } else {
+                        System.out.println("Ошибка. Попробуйте позже.");
+                    }
+                    break;
+                case ("Ввод"):
+                    System.out.println("Введите имя файла:");
+                    String fileName = in.nextLine();
+
+                    System.out.println("Список банков:");
+                    for (Bank bank2 : bankService.getAllBanks()) {
+                        System.out.println(bank2.getId() + ". " + bank2.getName());
+                    }
+                    System.out.println("Какой банк вас интересует? (введите номер):");
+                    int newBankId = in.nextInt();
+                    in.nextLine();
+
+                    boolean isOk2 = creditAccountService.importAccountsTxtAndTransferToBank(fileName, newBankId);
+                    if (isOk2) {
+                        System.out.println("Успешно!");
+                    } else {
+                        System.out.println("Ошибка. Попробуйте позже.");
                     }
                     break;
                 default:

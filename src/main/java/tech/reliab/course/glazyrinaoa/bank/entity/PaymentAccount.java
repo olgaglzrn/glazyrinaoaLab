@@ -1,6 +1,9 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
+import com.google.gson.annotations.Expose;
+
 public class PaymentAccount extends Account{
+    @Expose(serialize = true)
     private double  balance;
 
     private void initDefault() {

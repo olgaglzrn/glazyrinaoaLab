@@ -1,11 +1,15 @@
 package tech.reliab.course.glazyrinaoa.bank.entity;
 
+import com.google.gson.annotations.Expose;
 
 public class Account {
     private static int currentId = 0;
 
+    @Expose(serialize = true)
     protected int id;
+    @Expose(serialize = false)
     protected User user;
+    @Expose(serialize = false)
     protected Bank bank;
 
     private void initializeId() {

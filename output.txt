@@ -1,0 +1,32 @@
+[
+  {
+    "dateStart": {},
+    "dateEnd": {},
+    "monthCount": 60,
+    "creditAmount": 879659.0,
+    "remainingCreditAmount": 897977.0,
+    "montlyPayment": 19985.0,
+    "interestRate": 6.5854099237199195,
+    "employee": {},
+    "paymentAccount": {
+      "balance": 8012.8630594037195,
+      "id": 236
+    },
+    "id": 235
+  },
+  {
+    "dateStart": {},
+    "dateEnd": {},
+    "monthCount": 60,
+    "creditAmount": 111647.0,
+    "remainingCreditAmount": 497437.0,
+    "montlyPayment": 27797.0,
+    "interestRate": 6.5854099237199195,
+    "employee": {},
+    "paymentAccount": {
+      "balance": 1373.1113329905775,
+      "id": 240
+    },
+    "id": 239
+  }
+]

@@ -166,6 +166,14 @@ public class Bank {
         this.interestRate = interestRate;
     }
 
+    public void addUser(User user) {
+        lstUsers.add(user);
+    }
+
+    public void removeUser(User user) {
+        lstUsers.remove(lstUsers.indexOf(user));
+    }
+
     public List<User> getLstUsers() {
         return lstUsers;
     }
